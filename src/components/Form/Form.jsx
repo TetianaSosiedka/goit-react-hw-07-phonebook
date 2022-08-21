@@ -20,8 +20,10 @@ import Button from '@mui/material/Button';
 const NewContactForm = () => {
   const [updateItem, { isLoading, isSuccess, isError, isUninitialized }] =
     useUpdateContactsMutation();
-  const { data } = useGetContactsQuery('');
-  const items = useSelector(state => state.contacts.items) || data;
+  const itemsState = useSelector(state => state.contacts.items);
+  const { data } = useGetContactsQuery('', { skip: itemsState.length !== 0 });
+
+  const items = itemsState || data;
 
   const navigate = useNavigate();
 
